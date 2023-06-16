@@ -2,11 +2,7 @@ Here is a simple flow chart:
 
 ```mermaid
 graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-    User Types Note --> User Clicks Save;
+    User-Types-Note --> User-Clicks-Save;
 ```
 
 0.4 User Creates a New Note:

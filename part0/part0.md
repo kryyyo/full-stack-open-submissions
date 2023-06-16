@@ -6,7 +6,7 @@ graph TD;
     A-->C;
     B-->D;
     C-->D;
-    User-Types-Note --> User-Clicks-Save;
+    User Types Note --> User Clicks Save;
 ```
 
 0.4 User Creates a New Note:

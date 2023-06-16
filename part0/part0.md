@@ -6,13 +6,14 @@ graph TD;
     A-->C;
     B-->D;
     C-->D;
+    User-Types-Note --> User-Clicks-Save;
 ```
 
 0.4 User Creates a New Note:
 
 On the browser:
 ```mermaid graph TD;
-    User-Types-Note --> User-Clicks-Save;
+    
 ```
 
 browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note \n form-data: "note"

@@ -1,0 +1,17 @@
+title 0.6 Single Page App Diagram - New Note
+
+Note right of browser:
+The user types in their input. The user clicks the save button.
+Prevent default behavior of submitting forms (redirection)
+Create an object note for your new note
+Push the note to the existing notes
+Rerender the notes object in DOM using redrawNotes()
+Send the new note to the server
+End note
+
+browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+	              request-payload: {"content": "hello", "date": "2023-06-16T21:39:39.951Z"} (stringified version of the new note)
+				  content-type: application/json
+activate server
+server-->>browser: response: {"message":"note created"}
+deactivate server

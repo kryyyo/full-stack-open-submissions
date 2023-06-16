@@ -12,7 +12,7 @@ graph TD;
 
 On the browser:
 ```mermaid graph TD;
-    User Types Note --> User Clicks Save;
+    User-Types-Note --> User-Clicks-Save;
 ```
 
 browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note \n form-data: "note"

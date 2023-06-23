@@ -6,9 +6,26 @@ const FeedbackButton = ({ name, handleClick }) => {
   )
 }
 
-const Stats = ({ name, count }) => {
+const Stats = ({ feedbacks }) => {
+  const total = feedbacks.reduce((prevValue, currValue) => prevValue + currValue.count, 0);
+
+  const netTotal = feedbacks.reduce((prevValue, currValue) => {
+    if (currValue.opt === 'neutral') return prevValue;
+    else if (currValue.opt === 'bad') return prevValue - currValue.count;
+    else return prevValue + currValue.count;
+  }, 0)
+
+  const ave = netTotal / total;
+  const onlyGoodCount = feedbacks.find(feedback => feedback.opt === 'good').count ?? 0;
+  const positive = (onlyGoodCount / total) * 100;
+
   return (
-    <p>{name} {count}</p>
+    <>
+    {feedbacks.map(feedback => (<p key={feedback.opt}>{feedback.opt} {feedback.count}</p>))}
+    <p>all {total}</p>
+    <p>average {ave}</p>
+    <p>positive {positive} %</p>
+    </>
   )
 }
 
@@ -37,13 +54,7 @@ const App = () => {
         />
       ))}
       <h1>statistics</h1>
-      {feedbacks.map(feedback => (
-        <Stats
-          key={feedback.opt}
-          name={feedback.opt}
-          count={feedback.count}
-        />
-      ))}
+      <Stats feedbacks={feedbacks} />
     </div>
   )
 }

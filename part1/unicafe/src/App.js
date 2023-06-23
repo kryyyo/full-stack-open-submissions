@@ -21,11 +21,14 @@ const Statistics = ({ feedbacks }) => {
 
   return (
     <>
-    <h1>statistics</h1>
-    {feedbacks.map(feedback => (<p key={feedback.opt}>{feedback.opt} {feedback.count}</p>))}
-    <p>all {total}</p>
-    <p>average {ave}</p>
-    <p>positive {positive} %</p>
+    {total === 0 ? <p>No feedback given</p> :
+      <>
+      {feedbacks.map(feedback => (<p key={feedback.opt}>{feedback.opt} {feedback.count}</p>))}
+      <p>all {total}</p>
+      <p>average {ave}</p>
+      <p>positive {positive} %</p>
+      </>
+    }
     </>
   )
 }
@@ -54,6 +57,7 @@ const App = () => {
           handleClick={handleClick(feedback.count, feedback.setState)}
         />
       ))}
+      <h1>statistics</h1>
       <Statistics feedbacks={feedbacks} />
     </div>
   )

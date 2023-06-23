@@ -19,16 +19,28 @@ const Statistics = ({ feedbacks }) => {
   const onlyGoodCount = feedbacks.find(feedback => feedback.opt === 'good').count ?? 0;
   const positive = (onlyGoodCount / total) * 100;
 
+  const additionalStats = [
+    { text: 'all', value: total },
+    { text: 'average', value: ave },
+    { text: 'positive', value: positive },
+  ]
+
   return (
     <>
     {total === 0 ? <p>No feedback given</p> :
       <>
-      {feedbacks.map(feedback => (<p key={feedback.opt}>{feedback.opt} {feedback.count}</p>))}
-      <p>all {total}</p>
-      <p>average {ave}</p>
-      <p>positive {positive} %</p>
+      {feedbacks.map(feedback => (<StatisticLine key={feedback.opt} text={feedback.opt} value={feedback.count} />))}
+      {additionalStats.map(stat => <StatisticLine key={stat.text} text={stat.text} value={stat.value} />)}
       </>
     }
+    </>
+  )
+}
+
+const StatisticLine = ({ text, value }) => {
+  return (
+    <>
+    {text === 'positive' ? <p>{text} {value} %</p> : <p>{text} {value}</p>}
     </>
   )
 }

@@ -6,7 +6,7 @@ const FeedbackButton = ({ name, handleClick }) => {
   )
 }
 
-const Stats = ({ feedbacks }) => {
+const Statistics = ({ feedbacks }) => {
   const total = feedbacks.reduce((prevValue, currValue) => prevValue + currValue.count, 0);
 
   const netTotal = feedbacks.reduce((prevValue, currValue) => {
@@ -21,6 +21,7 @@ const Stats = ({ feedbacks }) => {
 
   return (
     <>
+    <h1>statistics</h1>
     {feedbacks.map(feedback => (<p key={feedback.opt}>{feedback.opt} {feedback.count}</p>))}
     <p>all {total}</p>
     <p>average {ave}</p>
@@ -53,8 +54,7 @@ const App = () => {
           handleClick={handleClick(feedback.count, feedback.setState)}
         />
       ))}
-      <h1>statistics</h1>
-      <Stats feedbacks={feedbacks} />
+      <Statistics feedbacks={feedbacks} />
     </div>
   )
 }

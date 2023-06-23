@@ -27,10 +27,13 @@ const Statistics = ({ feedbacks }) => {
 
   return (
     <>
-    {total === 0 ? <p>No feedback given</p> :
+    {total === 0 ?
+      <tr>
+        <td>No feedback given</td>
+      </tr> :
       <>
       {feedbacks.map(feedback => (<StatisticLine key={feedback.opt} text={feedback.opt} value={feedback.count} />))}
-      {additionalStats.map(stat => <StatisticLine key={stat.text} text={stat.text} value={stat.value} />)}
+      {additionalStats.map(stat => (<StatisticLine key={stat.text} text={stat.text} value={stat.value} />))}
       </>
     }
     </>
@@ -39,9 +42,10 @@ const Statistics = ({ feedbacks }) => {
 
 const StatisticLine = ({ text, value }) => {
   return (
-    <>
-    {text === 'positive' ? <p>{text} {value} %</p> : <p>{text} {value}</p>}
-    </>
+    <tr>
+      <td>{text}</td>
+      <td>{value} {text === 'positive' && '%'}</td>
+    </tr>
   )
 }
 
@@ -69,8 +73,16 @@ const App = () => {
           handleClick={handleClick(feedback.count, feedback.setState)}
         />
       ))}
-      <h1>statistics</h1>
-      <Statistics feedbacks={feedbacks} />
+      <table>
+        <thead>
+          <tr>
+            <th><h1>statistics</h1></th>
+          </tr>
+        </thead>
+        <tbody>
+          <Statistics feedbacks={feedbacks} />
+        </tbody>
+      </table>
     </div>
   )
 }

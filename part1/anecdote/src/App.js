@@ -17,6 +17,11 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [anecdoteWithVotes, setAnecdoteWithVotes] = useState(initAnecdoteWithVotes)
 
+  const mostVotedAnecdote = useMemo(() => anecdoteWithVotes.reduce((acc, curr) => {
+    if (acc.vote > curr.vote) return acc;
+    else return curr;
+  }), [anecdoteWithVotes])
+
   const randomize = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
   const handleNext = () => {
@@ -30,11 +35,6 @@ const App = () => {
     newArray[selected].vote += 1;
     setAnecdoteWithVotes(newArray);
   }
-
-  const mostVotedAnecdote = useMemo(() => anecdoteWithVotes.reduce((acc, curr) => {
-    if (acc.vote > curr.vote) return acc;
-    else return curr;
-  }), [anecdoteWithVotes])
 
   return (
     <div>

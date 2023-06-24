@@ -31,13 +31,27 @@ const App = () => {
     setAnecdoteWithVotes(newArray);
   }
 
+  const mostVotedAnecdote = useMemo(() => anecdoteWithVotes.reduce((acc, curr) => {
+    if (acc.vote > curr.vote) return acc;
+    else return curr;
+  }), [anecdoteWithVotes])
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdoteWithVotes[selected].anecdote}<br />
       has {anecdoteWithVotes[selected].vote} votes
       <br/>
       <button onClick={handleVote}>vote</button>
       <button onClick={handleNext}>next anecdote</button>
+      <br />
+      <h1>Anecdote with the most votes</h1>
+      {mostVotedAnecdote.vote === 0 ? 
+      <>No votings yet</> :
+      <>
+      {mostVotedAnecdote.anecdote}<br />
+      has {mostVotedAnecdote.vote} votes
+      </>}
     </div>
   )
 }

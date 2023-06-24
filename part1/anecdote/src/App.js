@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const App = () => {
   const anecdotes = [
@@ -11,24 +11,33 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const initAnecdoteWithVotes = anecdotes.map(anecdote => ({ anecdote, vote: 0 }))
    
   const [selected, setSelected] = useState(0)
+  const [anecdoteWithVotes, setAnecdoteWithVotes] = useState(initAnecdoteWithVotes)
 
   const randomize = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-  const handleClick = () => {
+  const handleNext = () => {
     const max = anecdotes.length - 1; // prevents out of bound errors
     const randomNumber = randomize(0, max);
     setSelected(randomNumber);
   }
 
-  
+  const handleVote = () => {
+    const newArray = [...anecdoteWithVotes]
+    newArray[selected].vote += 1;
+    setAnecdoteWithVotes(newArray);
+  }
 
   return (
     <div>
-      {anecdotes[selected]}
-      <br />
-      <button onClick={handleClick}>next anecdote</button>
+      {anecdoteWithVotes[selected].anecdote}<br />
+      has {anecdoteWithVotes[selected].vote} votes
+      <br/>
+      <button onClick={handleVote}>vote</button>
+      <button onClick={handleNext}>next anecdote</button>
     </div>
   )
 }

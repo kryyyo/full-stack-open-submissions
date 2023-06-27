@@ -9,8 +9,19 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
     const trimmed = newName.trim();
-    if (trimmed !== '') setPersons([...persons, { name: trimmed }]);
-    setNewName('');
+
+    const hasExisting = persons.some(person => person.name === trimmed);
+    if (hasExisting) {
+      alert(`${trimmed} is already added to the phonebook`);
+      setNewName(trimmed);
+    } else {
+      if (trimmed !== '') {
+        setPersons([...persons, { name: trimmed }]);
+      }
+      setNewName('');
+    }
+
+    
   };
 
   const handleInputChange = (e) => setNewName(e.target.value);

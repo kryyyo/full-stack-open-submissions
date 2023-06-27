@@ -2,43 +2,49 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
 
   const addPerson = (e) => {
     e.preventDefault();
-    const trimmed = newName.trim();
+    const trimmedName = newName.trim();
+    const trimmedPhone = newPhone.trim();
 
-    const hasExisting = persons.some(person => person.name === trimmed);
+    const hasExisting = persons.some(person => person.name === trimmedName);
     if (hasExisting) {
-      alert(`${trimmed} is already added to the phonebook`);
-      setNewName(trimmed);
+      alert(`${trimmedName} is already added to the phonebook`);
+      setNewName(trimmedName);
+      setNewPhone(trimmedPhone);
     } else {
-      if (trimmed !== '') {
-        setPersons([...persons, { name: trimmed }]);
+      if (trimmedName !== '') {
+        setPersons([...persons, { id: persons.length + 1, name: trimmedName, phone: trimmedPhone }]);
       }
       setNewName('');
+      setNewPhone('');
     }
-
-    
   };
-
-  const handleInputChange = (e) => setNewName(e.target.value);
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleInputChange} />
+          name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
+        </div>
+        <div>
+          number: <input value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => <p key={person.name}>{person.name}</p>)}
+      {persons.map(person => <div key={person.id}>{person.name} {person.phone}</div>)}
     </div>
   )
 }

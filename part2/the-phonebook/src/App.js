@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,6 +9,19 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [searchVal, setSearchVal] = useState('')
+  const [filteredPersons, setFilteredPersons] = useState([]); 
+
+  useEffect(() => {
+    const trimmedSearch = searchVal.trim();
+
+    if (trimmedSearch !== '') {
+      const filtered = persons.filter(person => person.name.toLowerCase().includes(trimmedSearch));
+      setFilteredPersons(filtered);
+    } else {
+      setFilteredPersons(persons);
+    }
+  }, [searchVal])
 
   const addPerson = (e) => {
     e.preventDefault();
@@ -32,6 +45,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value={searchVal} onChange={(e) => setSearchVal(e.target.value)}/>
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
@@ -44,7 +61,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person => <div key={person.id}>{person.name} {person.phone}</div>)}
+      {filteredPersons.map(person => <div key={person.id}>{person.name} {person.phone}</div>)}
     </div>
   )
 }

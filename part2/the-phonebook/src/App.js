@@ -13,7 +13,7 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState([]); 
 
   useEffect(() => {
-    const trimmedSearch = searchVal.trim();
+    const trimmedSearch = searchVal.toLowerCase().trim();
 
     if (trimmedSearch !== '') {
       const filtered = persons.filter(person => person.name.toLowerCase().includes(trimmedSearch));
@@ -21,7 +21,7 @@ const App = () => {
     } else {
       setFilteredPersons(persons);
     }
-  }, [searchVal])
+  }, [persons, searchVal])
 
   const addPerson = (e) => {
     e.preventDefault();

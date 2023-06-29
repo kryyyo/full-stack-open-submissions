@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
+import './index.css'
 import personSrvc from './services/persons'
 
 const App = () => {
@@ -10,6 +12,7 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [searchVal, setSearchVal] = useState('')
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personSrvc
@@ -40,7 +43,11 @@ const App = () => {
       if (window.confirm(`${existingPerson.name} is already added to the phonebook, replace the old number with a new one?`)) {
         personSrvc
           .update(existingPerson.id, newPerson)
-          .then(updated => setPersons(persons.map(person => person.id !== existingPerson.id ? person : updated)))
+          .then(updated => {
+            setPersons(persons.map(person => person.id !== existingPerson.id ? person : updated))
+            setMessage(`Updated ${updated.name}`)
+          })
+          .finally(() => setTimeout(() => setMessage(null), 3000))
       } else {
         // trim the current input
         setNewName(newPerson.name);
@@ -50,7 +57,11 @@ const App = () => {
       if (trimmedName !== '') {
         personSrvc
           .create(newPerson)
-          .then(added => setPersons([...persons, added]))
+          .then(added => {
+            setPersons([...persons, added])
+            setMessage(`Added ${added.name}`)
+          })
+          .finally(() => setTimeout(() => setMessage(null), 3000))
       }
       setNewName('');
       setNewPhone('');
@@ -72,6 +83,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
+
       <Filter
         searchVal={searchVal}
         handleSearch={handleSearch}

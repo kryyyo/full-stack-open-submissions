@@ -51,6 +51,14 @@ const App = () => {
     }
   };
 
+  const deletePerson = person => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personSrvc
+        .del(person.id)
+        .then(deleted => setPersons(persons.filter(curr => curr.id !== person.id)))
+    }
+  }
+
   const handleSearch = (e) => setSearchVal(e.target.value);
   const handleInputName = (e) => setNewName(e.target.value);
   const handleInputPhone = (e) => setNewPhone(e.target.value);
@@ -73,7 +81,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons filteredPersons={filteredPersons} />
+      <Persons filteredPersons={filteredPersons} deletePerson={deletePerson} />
     </div>
   )
 }

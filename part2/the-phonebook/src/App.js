@@ -13,6 +13,7 @@ const App = () => {
   const [searchVal, setSearchVal] = useState('')
   const [filteredPersons, setFilteredPersons] = useState([]);
   const [message, setMessage] = useState(null);
+  const [severity, setSeverity] = useState(null);
 
   useEffect(() => {
     personSrvc
@@ -46,8 +47,16 @@ const App = () => {
           .then(updated => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : updated))
             setMessage(`Updated ${updated.name}`)
+            setSeverity('success')
           })
-          .finally(() => setTimeout(() => setMessage(null), 3000))
+          .catch(error => {
+            setMessage(`Failed to update ${existingPerson.name}`)
+            setSeverity('error')
+          })
+          .finally(() => setTimeout(() => {
+            setMessage(null)
+            setSeverity(null)
+          }, 3000))
       } else {
         // trim the current input
         setNewName(newPerson.name);
@@ -60,8 +69,16 @@ const App = () => {
           .then(added => {
             setPersons([...persons, added])
             setMessage(`Added ${added.name}`)
+            setSeverity('success')
           })
-          .finally(() => setTimeout(() => setMessage(null), 3000))
+          .catch(error => {
+            setMessage(`Failed to add ${newPerson.name}`)
+            setSeverity('error')
+          })
+          .finally(() => setTimeout(() => {
+            setMessage(null)
+            setSeverity(null)
+          }, 3000))
       }
       setNewName('');
       setNewPhone('');
@@ -72,7 +89,20 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personSrvc
         .del(person.id)
-        .then(deleted => setPersons(persons.filter(curr => curr.id !== person.id)))
+        .then(deleted => {
+          setPersons(persons.filter(curr => curr.id !== person.id))
+          setMessage(`Deleted ${person.name}`)
+          setSeverity('success')
+        })
+        .catch(error => {
+          setPersons(persons.filter(curr => curr.id !== person.id))
+          setMessage(`Information of ${person.name} has already been deleted`)
+          setSeverity('error')
+        })
+        .finally(() => setTimeout(() => {
+          setMessage(null)
+          setSeverity(null)
+        }, 3000))
     }
   }
 
@@ -83,7 +113,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} severity={severity} />
 
       <Filter
         searchVal={searchVal}

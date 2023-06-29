@@ -1,3 +1,5 @@
+import Country from './components/country';
+import CountryRow from './components/country-row';
 import countriesSrvc from './services/countries'
 import { useEffect, useState } from 'react';
 
@@ -28,27 +30,12 @@ const App = () => {
   const getList = () => {
     if (filtered.length === 1) {
       const country = filtered[0];
-      return (
-        <div>
-          <h1>{country.name.common}</h1>
-          <div>capital {country.capital.length ? country.capital.join(',') : null}</div>
-          <div>area {country.area}</div>
-
-          <h3>languages:</h3>
-          <ul>
-            {Object.values(country.languages).map(lang => <li key={lang}>{lang}</li>)}
-          </ul>
-
-          <img alt={country.flags.alt} src={country.flags.png} />
-        </div>
-      )
+      return (<Country country={country} />)
     } else if (filtered.length > 10) {
       return (<div>Too many matches, specify another filter</div>)
     } else if (filtered.length > 1) {
       return (
-        filtered.map(country =>
-          <div key={country.name.official}>{country.name.common}</div>
-        )
+        filtered.map(country => <CountryRow key={country.name.common} country={country} />)
       )
     } else return null
   }
@@ -56,14 +43,11 @@ const App = () => {
   const handleChange = (e) => setSearchVal(e.target.value);
 
   return (
-    <>
     <div>
       find countries
       <input value={searchVal} onChange={handleChange} />
       {getList()}
     </div>
-    
-    </>
   )
 }
 

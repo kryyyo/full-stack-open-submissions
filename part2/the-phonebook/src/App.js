@@ -33,14 +33,22 @@ const App = () => {
     const trimmedName = newName.trim();
     const trimmedPhone = newPhone.trim();
 
+    const newPerson = { name: trimmedName, number: trimmedPhone };
+
     const hasExisting = persons.some(person => person.name === trimmedName);
     if (hasExisting) {
-      alert(`${trimmedName} is already added to the phonebook`);
-      setNewName(trimmedName);
-      setNewPhone(trimmedPhone);
+      alert(`${newPerson.name} is already added to the phonebook`);
+      setNewName(newPerson.name);
+      setNewPhone(newPerson.number);
     } else {
       if (trimmedName !== '') {
-        setPersons([...persons, { id: persons.length + 1, name: trimmedName, number: trimmedPhone }]);
+
+        axios
+          .post('http://localhost:3001/persons', newPerson)
+          .then(response => {
+            const added = response.data;
+            setPersons([...persons, added]);
+          })
       }
       setNewName('');
       setNewPhone('');

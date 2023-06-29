@@ -35,11 +35,17 @@ const App = () => {
 
     const newPerson = { name: trimmedName, number: trimmedPhone };
 
-    const hasExisting = persons.some(person => person.name === trimmedName);
-    if (hasExisting) {
-      alert(`${newPerson.name} is already added to the phonebook`);
-      setNewName(newPerson.name);
-      setNewPhone(newPerson.number);
+    const existingPerson = persons.find(person => person.name === trimmedName);
+    if (existingPerson) {
+      if (window.confirm(`${existingPerson.name} is already added to the phonebook, replace the old number with a new one?`)) {
+        personSrvc
+          .update(existingPerson.id, newPerson)
+          .then(updated => setPersons(persons.map(person => person.id !== existingPerson.id ? person : updated)))
+      } else {
+        // trim the current input
+        setNewName(newPerson.name);
+        setNewPhone(newPerson.number);
+      }
     } else {
       if (trimmedName !== '') {
         personSrvc

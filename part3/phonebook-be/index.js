@@ -26,18 +26,29 @@ const persons = [
   }
 ]
 
-app.get('/api/persons', (req, res) => res.json(persons))
-
 const getDateTimeNow = () => {
   const timestamp = Date.now();
   const date = new Date(timestamp);
   return date.toString();
 }
 
+app.get('/api/persons', (req, res) => res.json(persons))
+
 app.get('/info', (req, res) => {
   const html = `<p>Phonebook has info for ${persons.length} people</p>
                 <p>${getDateTimeNow()}</p>`
   res.send(html);
+})
+
+app.get('/api/persons/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const person = persons.find(person => person.id === id);
+
+  if (person) res.json(person);
+  else {
+    res.statusMessage = 'No person found for that id!'
+    res.status(404).end();
+  }
 })
 
 

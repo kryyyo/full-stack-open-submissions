@@ -32,6 +32,12 @@ const getDateTimeNow = () => {
   return date.toString();
 }
 
+const generateRandomId = () => {
+  const min = Math.ceil(5); // first n+1 from our data
+  const max = Math.floor(2147483647); // max integer
+  return Math.floor(Math.random() * (max - min + 1) + min); // inclusive
+}
+
 app.get('/api/persons', (req, res) => res.json(persons))
 
 app.get('/info', (req, res) => {
@@ -55,6 +61,27 @@ app.delete('/api/persons/:id', (req, res) => {
   const id = parseInt(req.params.id)
   persons = persons.filter(person => person.id !== id)
   res.status(204).end();
+})
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+  const hasNameAndNumber = body.name && body.number;
+
+  if (!hasNameAndNumber) {
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const person = {
+    id: generateRandomId(),
+    name: body.name,
+    number: body.number,
+  }
+
+  persons = [...persons, person];
+
+  res.json(persons);
 })
 
 
